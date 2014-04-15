@@ -1,0 +1,30 @@
+x1 = x(:, 1);
+x2 = x(:, 2);
+theta1 = x(:, 3);
+theta2 = x(:, 4);
+figure
+subplot(3, 2, 1)
+plot(t, x1)
+xlabel('Czas [s]')
+ylabel('Odleg³oœæ [m]')
+title(sprintf('Po³o¿enie (x(0) = %.2f m)', x0(1)))
+subplot(3, 2, 2)
+plot(t, x2)
+xlabel('Czas [s]')
+ylabel('Prêdkoœæ [m/s]')
+title(sprintf('Prêdkoœæ (x''(0) = %.2f m/s)', radtodeg(x0(2))))
+subplot(3, 2, 3)
+plot(t, radtodeg(theta1))
+xlabel('Czas [s]')
+ylabel(sprintf('Wychylenie [%c]', 176))
+title(sprintf('Wychylenie (Theta(0) = %.2f%c)', radtodeg(x0(3)), 176))
+subplot(3, 2, 4)
+plot(t, radtodeg(theta2))
+xlabel('Czas [s]')
+ylabel(sprintf('Prêdkoœæ [%c/s]', 176))
+title(sprintf('Prêdkoœæ k¹towa (Theta''(0) = %.2f %c/s)', x0(4), 176))
+subplot(3, 2, [5 6])
+plot(t, u)
+xlabel('Czas [s]')
+ylabel('Sterowanie')
+title('Sterowanie u')
