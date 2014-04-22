@@ -23,7 +23,7 @@ for i = 1:length(u)
 end
 
 %% OBLICZENIA
-[x, t] = rozwiaz_uklad(u, odstep_czasu, x0, m, M, l, g, fp, fc, ilosc_punktow_czasu);
+[x, psi_prim, t] = rozwiaz_uklad(u, odstep_czasu, x0, m, M, l, g, fp, fc, ilosc_punktow_czasu);
 
 %% TRAJEKTORIE
 trajektorie

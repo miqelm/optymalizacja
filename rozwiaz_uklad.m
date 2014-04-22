@@ -1,8 +1,8 @@
-function [x, t] = rozwiaz_uklad(u, odstep_czasu, x0, m, M, l, g, fp, fc, ilosc_punktow_czasu)
+function [x, psi_prim, t] = rozwiaz_uklad(u, odstep_czasu, x0, m, M, l, g, fp, fc, ilosc_punktow_czasu)
 
 %% Alokacja pamiêci dla zmiennych
 x = zeros(ilosc_punktow_czasu, 4);
-psi = zeros(ilosc_punktow_czasu, 4);
+psi_prim = zeros(ilosc_punktow_czasu, 4);
 t = zeros(ilosc_punktow_czasu, 1);
 
 %% Warunki pocz¹tkowe
@@ -17,12 +17,12 @@ for i = 1:ilosc_punktow_czasu-1
 end
 
 %% Rozwi¹zanie sprzê¿onych równañ ró¿niczkowych wstecz
-psi(ilosc_punktow_czasu)= [0 0 0 0];
+psi_prim(ilosc_punktow_czasu, :)= [0 0 0 0];
 
 for i = ilosc_punktow_czasu:-1:2
-    z = [x(i, :) psi(i, :)];
+    z = [x(i, :) psi_prim(i, :)];
     z = rk4_a(z, u(i-1), odstep_czasu, m, M, l, g, fp, fc);
-    psi(i-1, :) = z(5:8);
+    psi_prim(i-1, :) = z(5:8);
 end
 
 end
