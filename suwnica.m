@@ -10,7 +10,7 @@ x0 = 0;
 xprim0 = 0;
 theta0 = 0;
 thetaprim0 = 0;
-x0 = [x0 xprim0 theta0 thetaprim0];
+x0 = [x0 xprim0 theta0 thetaprim0 0];
 
 %% STEROWANIE
 u = zeros(ilosc_punktow_czasu, 1);
@@ -23,7 +23,10 @@ for i = 1:length(u)
 end
 
 %% OBLICZENIA
-[x, psi_prim, t] = rozwiaz_uklad(u, odstep_czasu, x0, m, M, l, g, fp, fc, ilosc_punktow_czasu);
+[x, psi_rozw, dQ, t] = rozwiaz_uklad(u, odstep_czasu, x0, m, M, l, g, fp, fc, ilosc_punktow_czasu);
+
+psi_rozw(1, :)'
+dQ(1:4)
 
 %% TRAJEKTORIE
 trajektorie

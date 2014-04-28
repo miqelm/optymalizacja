@@ -1,8 +1,8 @@
-function [x, psi_prim, t] = rozwiaz_uklad(u, odstep_czasu, x0, m, M, l, g, fp, fc, ilosc_punktow_czasu)
+function [x, psi_rozw, dQ, t] = rozwiaz_uklad(u, odstep_czasu, x0, m, M, l, g, fp, fc, ilosc_punktow_czasu)
 
 %% Alokacja pamiêci dla zmiennych
-x = zeros(ilosc_punktow_czasu, 4);
-psi_prim = zeros(ilosc_punktow_czasu, 4);
+x = zeros(ilosc_punktow_czasu, 5);
+psi = zeros(ilosc_punktow_czasu, 4);
 t = zeros(ilosc_punktow_czasu, 1);
 
 %% Warunki pocz¹tkowe
@@ -17,12 +17,23 @@ for i = 1:ilosc_punktow_czasu-1
 end
 
 %% Rozwi¹zanie sprzê¿onych równañ ró¿niczkowych wstecz
-psi_prim(ilosc_punktow_czasu, :)= [0 0 0 0];
+psi_rozw(ilosc_punktow_czasu, :)= [0 0 0 0];
 
 for i = ilosc_punktow_czasu:-1:2
-    z = [x(i, :) psi_prim(i, :)];
+    z = [x(i, 1:4) psi_rozw(i, :)];
     z = rk4_a(z, u(i-1), odstep_czasu, m, M, l, g, fp, fc);
-    psi_prim(i-1, :) = z(5:8);
+    psi_rozw(i-1, :) = z(5:8);
+end
+
+dQ = zeros(length(x0), 1);
+%% Sprawdzanie
+epsil = 1e-6;
+Q = cost(u, odstep_czasu, x0, m, M, l, g, fp, fc, ilosc_punktow_czasu);
+for i = 1:length(x0)
+    x0_ = x0;
+    x0_(i) = x0_(i) + epsil;
+    Q_ = cost(u, odstep_czasu, x0_, m, M, l, g, fp, fc, ilosc_punktow_czasu);
+    dQ(i) = -(Q_ - Q)/epsil;
 end
 
 end
