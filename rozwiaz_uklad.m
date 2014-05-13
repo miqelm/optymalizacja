@@ -2,7 +2,6 @@ function [x, psi_rozw, dQ, t] = rozwiaz_uklad(u, odstep_czasu, x0, m, M, l, g, f
 
 %% Alokacja pamiêci dla zmiennych
 x = zeros(ilosc_punktow_czasu, 5);
-psi = zeros(ilosc_punktow_czasu, 4);
 t = zeros(ilosc_punktow_czasu, 1);
 
 %% Warunki pocz¹tkowe
@@ -33,7 +32,7 @@ for i = 1:length(x0)
     x0_ = x0;
     x0_(i) = x0_(i) + epsil;
     Q_ = cost(u, odstep_czasu, x0_, m, M, l, g, fp, fc, ilosc_punktow_czasu);
-    dQ(i) = -(Q_ - Q)/epsil;
+    dQ(i) = (Q_ - Q)/epsil;
 end
 
 end

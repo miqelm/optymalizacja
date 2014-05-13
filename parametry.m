@@ -7,5 +7,5 @@ fc = 1;
 fp = 0.5;
 
 %% Parametry symulacji
-ilosc_punktow_czasu = 50000;
-odstep_czasu = 0.001;
+ilosc_punktow_czasu = 5000;
+odstep_czasu = 0.01;

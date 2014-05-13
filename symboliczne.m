@@ -30,4 +30,5 @@ H = Psi1 * x2 + Psi2 * f2 + Psi3 * x4 + Psi4 * f4 - x3^2;
 dPsi1 = -diff(H, x1);
 dPsi2 = -diff(H, x2);
 dPsi3 = -diff(H, x3);
-dPsi4 = -diff(H, x4)
+dPsi4 = -diff(H, x4);
+diff(H, u)
