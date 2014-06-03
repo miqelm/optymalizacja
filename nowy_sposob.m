@@ -9,12 +9,9 @@ t = zeros(cn(end), 1);
 ster = zeros(cn(end), 1);
 
 %% Obliczanie równañ ró¿niczkowych
+u = -u0; % Specjalnie ujemne, zeby na poczaku petli bylo takie, jakie powinno byc
 for j = 1:length(dtau) % Pêtla po odcinkach prze³¹czeñ
-    if mod(j, 2)
-        u = u0;
-    else
-        u = -u0;
-    end
+    u = -u;
     h = dtau(j)/n(j);
     h2 = h/2;
     h3 = h/3;
@@ -35,12 +32,10 @@ end
 
 %% Obliczanie równañ sprzê¿onych
 psi_rozw(cn(end), :)= [0 0 0 0];
+
+u = -u0; % Specjalnie ujemne, zeby na poczaku petli bylo takie, jakie powinno byc
 for j = length(dtau):-1:1 % Pêtla po odcinkach prze³¹czeñ
-    if mod(j, 2)
-        u = u0;
-    else
-        u = -u0;
-    end
+    u = -u;
     h = dtau(j)/n(j);
     h2 = h/2;
     h3 = h/3;
@@ -57,17 +52,9 @@ for j = length(dtau):-1:1 % Pêtla po odcinkach prze³¹czeñ
     end
 end
 
-%% Obliczanie gradientu
-n = 4;
-for j = length(dtau):-1:1 % Pêtla po odcinkach prze³¹czeñ
-    z = zeros(1, 2*n+1);
-    for i = cn(j+1):-1:cn(j)+1
-        z = [xn(i, :) psi_rozw(i, :) z(end)];
-        z(end) = z(6)/(m*sin(z(3))^2 + M + fc) - (z(8)*m*cos(z(3)))/((l*m + fp/l)*(m*sin(z(3))^2 + M + fc));
-    end
-    dQ(j, 1) = z(end);
-end
+gradient
 
+%% Tylko do sprawdzenia z poprzednim sposobem
 xn(end, :)=[];
 x=xn;
 u = ster(1:end-1);

@@ -32,4 +32,4 @@ nowy_sposob
 % sprawdzone = dQ(1:4)
 
 %% TRAJEKTORIE
-trajektorie
+% trajektorie
