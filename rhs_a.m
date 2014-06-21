@@ -1,5 +1,6 @@
-function [ dx ] = rhs_a( z, u, m, M, l, g, fp, fc)
+function [ dx ] = rhs_a(z, u, parametry)
 %% Zmienne pomocnicze
+dx = zeros(1, 8);
 x2 = z(2);
 x3 = z(3);
 x4 = z(4);
@@ -7,6 +8,12 @@ Psi1 = z(5);
 Psi2 = z(6);
 Psi3 = z(7);
 Psi4 = z(8);
+m = parametry(1);
+M = parametry(2);
+l = parametry(3);
+g = parametry(4);
+fp = parametry(5);
+fc = parametry(6);
 
 %% Wylicznie prawych stron równañ ró¿niczkowych
 dx1 = x2;
