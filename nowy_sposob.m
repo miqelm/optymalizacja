@@ -1,4 +1,4 @@
-tau = 0:1000*odstep_czasu:ilosc_punktow_czasu*odstep_czasu; % Wektor wêz³ów
+tau = 0:1000*odstep_czasu:czas_symulacji; % Wektor wêz³ów
 % tau = [0, sort(randperm(ilosc_punktow_czasu*odstep_czasu-1, 6)), ilosc_punktow_czasu*odstep_czasu];
 dtau = diff(tau); % D³ugoœæ przedzia³ów strukuralnych
 u0 = 1; % "Niby" znane sterowanie
@@ -7,6 +7,7 @@ n = ceil(dtau/h0)';
 cn = cumsum([1;n]);
 cn(end) = cn(end) - 1;
 xn = zeros(cn(end), length(x0));
+xn(1,:) = x0;
 t = zeros(cn(end), 1);
 ster = zeros(cn(end), 1);
 
@@ -29,29 +30,37 @@ for j = 1:length(dtau) % Pêtla po odcinkach prze³¹czeñ
         t(i+1) = t(i) + odstep_czasu;
         xn(i+1, :) = z;
     end
+    % Prze³¹czenie sterowania na przeciwne
     u = -u;
 end
 
 %% Obliczanie równañ sprzê¿onych
-psi_rozw(cn(end), :)= [0 0 0 0];
+xT = parametry(7);
+psi_rozw(cn(end), :)= [2*xT-2*xn(end,1) 0 0 0];
 
-u = u0;
 for j = length(dtau):-1:1 % Pêtla po odcinkach prze³¹czeñ
     h = dtau(j)/n(j);
     h2 = h/2;
     h3 = h/3;
     h6 = h/6;
     for i = cn(j+1):-1:cn(j)+1
-        % Krok Rungego-Kutty
         z = [xn(i, 1:4) psi_rozw(i, :)];
-        dz1 = rhs_a(z, u, parametry);
-        dz2 = rhs_a(z - h/2*dz1, u, parametry);
-        dz3 = rhs_a(z - h/2*dz2, u, parametry);
-        dz4 = rhs_a(z - h*dz3, u, parametry);
+        dz1 = rhs_a(z, ster(i), parametry);
+        dz2 = rhs_a(z - h/2*dz1, ster(i), parametry);
+        dz3 = rhs_a(z - h/2*dz2, ster(i), parametry);
+        dz4 = rhs_a(z - h*dz3, ster(i), parametry);
         z = z - h/3 * (dz2 + dz3) - h/6 * (dz1 + dz4);
         psi_rozw(i-1, :) = z(5:8);
     end
-    u = -u;
 end
 
-% gradient
+%% Sprawdzanie
+epsil = 1e-6;
+dQ = zeros(length(x0)-1, 1)';
+Q = cost(ster, odstep_czasu, x0, parametry, ilosc_punktow_czasu);
+for i = 1:length(x0)-1
+    x0_ = x0;
+    x0_(i) = x0_(i) + epsil;
+    Q_ = cost(ster, odstep_czasu, x0_, parametry, ilosc_punktow_czasu);
+    dQ(i) = (Q_ - Q)/epsil;
+end

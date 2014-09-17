@@ -4,8 +4,10 @@ parametry(2) = 0.604; % M
 parametry(3) = 0.165; % l
 parametry(4) = 9.81;  % g
 parametry(5) = 0.5;   % fp
-parametry(6) = 1;     % fc
+parametry(6) = 0.01;  % fc
+parametry(7) = 1;     % xT
 
 %% Parametry symulacji
-ilosc_punktow_czasu = 5000;
+czas_symulacji = 50;
 odstep_czasu = 0.01;
+ilosc_punktow_czasu = czas_symulacji / odstep_czasu;

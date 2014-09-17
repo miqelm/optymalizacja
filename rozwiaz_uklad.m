@@ -24,7 +24,8 @@ for i = 1:ilosc_punktow_czasu-1
 end
 
 %% Rozwi¹zanie sprzê¿onych równañ ró¿niczkowych wstecz
-psi_rozw(ilosc_punktow_czasu, :)= [0 0 0 0];
+xT = parametry(7);
+psi_rozw(ilosc_punktow_czasu, :)= [2*xT-2*x(end,1) 0 0 0];
 
 for i = ilosc_punktow_czasu:-1:2
     z = [x(i, 1:4) psi_rozw(i, :)];
