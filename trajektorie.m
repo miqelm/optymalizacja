@@ -24,6 +24,28 @@ xlabel('Czas [s]')
 ylabel(sprintf('Prêdkoœæ [%c/s]', 176))
 title(sprintf('Prêdkoœæ k¹towa (Theta''(0) = %.2f %c/s)', x0(4)*180/pi, 176))
 subplot(3, 2, [5 6])
+
+u=[];
+% xmin = [0; xmin];
+ster = u0;
+it = 1;
+i = 1
+while i <= length(t)
+    if abs(t(i) - xmin(it)) < odstep_czasu/2
+        ster = -ster;
+        if it < length(xmin)
+            it = it+1;
+        end
+        if xmin(it-1) == xmin(it)
+            continue
+        end
+    end
+    u(i) = ster;
+    i = i + 1;
+end
+% indeksy = find(t>xmin(end));
+% u(indeksy) = -ster;
+
 plot(t, u)
 xlabel('Czas [s]')
 ylabel('Sterowanie')

@@ -91,6 +91,7 @@ while (1)
 end
 [t, x, ~, dQ, H1] = gradient(x0, xmin, u0, umax, h0, Tk, a);
 tau = xmin;
+nrIteracji
 end
 
 

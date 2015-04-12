@@ -9,7 +9,7 @@ cn   = cumsum([1; N]);
 n        = length(x0);
 ui       = zeros(1, cn(end));
 x        = zeros(n, cn(end));
-psi      = zeros(n+1, cn(end));
+psi      = zeros(n-1, cn(end));
 H1       = zeros(1, cn(end));
 xtmp     = x0;
 x(:, 1)  = x0;
@@ -20,9 +20,9 @@ u        = zeros(length(dtau), 1);
 epsil    = 0;
 if u0 == umax
     u(1:2:end) = u0;
-    u(2:2:end) = 0;
+    u(2:2:end) = -u0;
 else
-    u(1:2:end) = 0;
+    u(1:2:end) = -umax;
     u(2:2:end) = umax;
 end
 p = u(end) - u(end-1);
@@ -45,7 +45,7 @@ for j = 1:length(dtau)
 end
 
 %Ca³kowanie równañ sprzê¿onych.
-psi(:,end)  = [0 0 x(4, end) x(3, end) 0];
+psi(:,end)  = [2*a(7)-2*x(1, end) 0 0 0];
 for j = length(dtau):-1:1
     h   = dtau(j)/N(j);
     h_2 = h/2;
@@ -53,7 +53,7 @@ for j = length(dtau):-1:1
     h_3 = 2*h_6;
     
     for i = cn(j+1):-1:cn(j)+1
-       ztmp = [x(:, i)' psi(:, i)'];
+       ztmp = [x(1:4, i)' psi(:, i)'];
        dz1=rhs_a(ztmp, u(j), a); 
        dz2=rhs_a(ztmp-h_2*dz1, u(j), a);
        dz3=rhs_a(ztmp-h_2*dz2, u(j), a);
