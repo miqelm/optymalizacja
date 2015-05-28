@@ -36,13 +36,13 @@ end
 dQ = zeros(length(x0), 1);
 %% Sprawdzanie
 epsil = 1e-6;
-Q = cost(u, odstep_czasu, x0, parametry, ilosc_punktow_czasu);
-for i = 1:length(x0)
-    x0_ = x0;
-    x0_(i) = x0_(i) + epsil;
-    Q_ = cost(u, odstep_czasu, x0_, parametry, ilosc_punktow_czasu);
-    dQ(i) = (Q_ - Q)/epsil;
-end
+% Q = cost(u, odstep_czasu, x0, parametry, ilosc_punktow_czasu);
+% for i = 1:length(x0)
+%     x0_ = x0;
+%     x0_(i) = x0_(i) + epsil;
+%     Q_ = cost(u, odstep_czasu, x0_, parametry, ilosc_punktow_czasu);
+%     dQ(i) = (Q_ - Q)/epsil;
+% end
 
 end
 

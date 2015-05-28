@@ -23,10 +23,10 @@ while (1)
                 display('Wychodze bo norma gradientu ma³a');
                 break;
             end
-            if epsil < e3 && norm(dQ) > e3
-                display('Wychodze bo funkcja prze³¹czaj¹ca jest bliska zeru przy przelaczeniach');
-                break;
-            end
+%             if epsil < e3 && norm(dQ) > e3
+%                 display('Wychodze bo funkcja prze³¹czaj¹ca jest bliska zeru przy przelaczeniach');
+%                 break;
+%             end
             krok = 3;
         case 3
             %Krok 3

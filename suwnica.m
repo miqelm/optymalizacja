@@ -19,10 +19,11 @@ x0 = [x0 xprim0 theta0 thetaprim0 0];
 % wyliczone = psi_rozw(1, :)
 % sprawdzone = -dQ
 %% OBLICZENIA
-% [x, psi_rozw, dQ, t] = rozwiaz_uklad(u, odstep_czasu, x0, parametry, ilosc_punktow_czasu);
+u = zeros(ilosc_punktow_czasu, 1);
+[x, psi_rozw, dQ, t] = rozwiaz_uklad(u, odstep_czasu, x0, parametry, ilosc_punktow_czasu);
 
-% wyliczone = psi_rozw(1, :)
-% sprawdzone = -dQ(1:4)'
+wyliczone = psi_rozw(1, :)
+sprawdzone = -dQ(1:4)'
 
 %Testowanie dzia³ania metody BFGS
 a = parametry;
@@ -31,8 +32,8 @@ a = parametry;
 X00 = x0;
 Tk = czas_symulacji;
 h0 = odstep_czasu;
-iloscPrzelaczen = 80;
-tau = linspace(0, Tk, iloscPrzelaczen+1)';
+iloscPrzelaczen = 3;
+tau = linspace(0, Tk, iloscPrzelaczen+2)';
 tau = tau(2:end-1);
 
 umax = 1;
@@ -41,8 +42,8 @@ e0 = 1e-6;
 [t, x, dQ, H, xmin, u0] = BFGS(tau, X00, h0, a, Tk, umax, u0);
 display('Otrzymane rozwi¹zanie');
 x=x';
-% xmin
-% u0
+xmin
+u0
 
 
 %% TRAJEKTORIE

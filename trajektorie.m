@@ -26,7 +26,7 @@ title(sprintf('Prêdkoœæ k¹towa (Theta''(0) = %.2f %c/s)', x0(4)*180/pi, 176))
 subplot(3, 2, [5 6])
 
 u=[];
-% xmin = [0; xmin];
+xmin = [0; xmin];
 ster = u0;
 it = 1;
 i = 1
@@ -43,8 +43,8 @@ while i <= length(t)
     u(i) = ster;
     i = i + 1;
 end
-% indeksy = find(t>xmin(end));
-% u(indeksy) = -ster;
+indeksy = find(t>xmin(end));
+u(indeksy) = -ster;
 
 plot(t, u)
 xlabel('Czas [s]')

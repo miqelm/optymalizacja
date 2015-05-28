@@ -60,7 +60,7 @@ for j = length(dtau):-1:1
        dz4=rhs_a(ztmp-h*dz3, u(j), a);
        ztmp=ztmp-h_6*(dz1+dz4)-h_3*(dz2+dz3);
        psi(:, i-1) = ztmp(5:end); 
-       psi(end, i-1) = dz1(end);
+%        psi(end, i-1) = dz1(end);
        H1(1, i-1) = dz1(end);
     end
     dQ(j) = psi(end, cn(j))*p;
