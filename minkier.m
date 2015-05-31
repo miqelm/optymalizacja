@@ -54,49 +54,49 @@ for i = 1:N
         beta = beta*0.5;
     end
 end
-% if Qmin >= Q0
-%     beta = 0.5;
-%     z = z0 - d0.*s;
-%     for i = 1:N
-%         if (z(1) < 0)
-%             z=z(2:end);
-%             u0 = umax-u0;
-%             d = d(2:end);
-%         end
-%         j = 1;
-%         len = length(z)-1;
-%         while j <= len
-%             if (z(j+1) - z(j)) < e0
-%                 if j < len-1
-%                     z = [z(1:j-1); z(j+2:end)];
-%                 else
-%                     z = z(1:j-1);
-%                 end
-%                 len = length(z)-1;
-%                 j = j-1;
-%                 if j < 1
-%                     j = 1;
-%                 end
-%             else
-%                 j = j + 1;
-%             end
-%         end
-%         if ~isempty(z)
-%             if z(end) > tf
-%                 z(end) = tf;
-%             end
-%         end
-%         Q = cost(x0, z, u0, umax, h0, tf, a);
-%         if Q < Q0
-%             display('znalazlem szukajac w druga strone');
-%             Qmin = Q;
-%             zmin = z;
-%             break;
-%         else
-%             z = z0-d0.*beta.*s;
-%             beta = beta*0.5;
-%         end
-%     end
-% end
+if Qmin >= Q0
+    beta = 0.5;
+    z = z0 - d0.*s;
+    for i = 1:N
+        if (z(1) < 0)
+            z=z(2:end);
+            u0 = umax-u0;
+            d = d(2:end);
+        end
+        j = 1;
+        len = length(z)-1;
+        while j <= len
+            if (z(j+1) - z(j)) < e0
+                if j < len-1
+                    z = [z(1:j-1); z(j+2:end)];
+                else
+                    z = z(1:j-1);
+                end
+                len = length(z)-1;
+                j = j-1;
+                if j < 1
+                    j = 1;
+                end
+            else
+                j = j + 1;
+            end
+        end
+        if ~isempty(z)
+            if z(end) > tf
+                z(end) = tf;
+            end
+        end
+        Q = cost(x0, z, u0, umax, h0, tf, a);
+        if Q < Q0
+            display('znalazlem szukajac w druga strone');
+            Qmin = Q;
+            zmin = z;
+            break;
+        else
+            z = z0-d0.*beta.*s;
+            beta = beta*0.5;
+        end
+    end
+end
 end
 

@@ -1,10 +1,9 @@
-function [ t, x, dQ, H1, tau, u0] = BFGS(tau, x0, h0, a, Tk, umax, u0)
+function [ t, x, tau, u0] = BFGS(tau, x0, h0, parametry, Tk, umax, u0)
 % Szukanie minimum metodπ BFGS
 
 e0 = 1e-6;
 e1 = 1e-6;
 e2 = 1e-3;
-e3 = 1e-5;
 R  = 1;
 xmin  = tau;
 krok   = 2;
@@ -18,15 +17,11 @@ while (1)
                 break;
             end
             nrIteracji = nrIteracji + 1;
-            [~, ~, ~, dQ, ~, epsil] = gradient(x0, xmin, u0, umax, h0, Tk, a);            
+            [~, ~, ~, dQ, ~] = gradient(x0, xmin, u0, umax, h0, Tk, parametry);            
             if norm(dQ) < e0
-                display('Wychodze bo norma gradientu ma≥a');
+                display('Norma gradientu za ma≥a. Koniec.');
                 break;
             end
-%             if epsil < e3 && norm(dQ) > e3
-%                 display('Wychodze bo funkcja prze≥πczajπca jest bliska zeru przy przelaczeniach');
-%                 break;
-%             end
             krok = 3;
         case 3
             %Krok 3
@@ -44,7 +39,7 @@ while (1)
             if d'*dQ > -max(e1, e2*norm(dQ)^2)
                 R = 1;
                 if odnowa == 1
-                    display('Wychodze bo kolejna odnowa nie da≥a skutku');
+                    display('Odnowa nie przynios≥a poprawy. Koniec.');
                     break;
                 else
                     krok = 3;
@@ -61,14 +56,14 @@ while (1)
             krok = 6;
         case 6
             %Krok 6
-            [xmin, Q, u0] = minkier(x0, d, xmin, h0, a, u0, umax, Tk);           
+            [xmin, Q, u0] = minkier(x0, d, xmin, h0, parametry, u0, umax, Tk);           
             krok = 7;
         case 7
             %Krok 7
             if (length(xmin) == length(xs))
                 if (mean(xmin == xs) == 1)
                     if R
-                        display('Wychodze bo rozwiazanie nie zmienilo sie');
+                        display('Rozwiπzanie nie uleg≥o zmianie. Koniec.');
                         break;
                     else
                         R = 1;
@@ -82,16 +77,15 @@ while (1)
                 R = 1;
                 krok = 2;
             end            
-            %x
-            %display('wskaznik jakosci oraz gradient');
-           % norm(dQ')
-            [nrIteracji, Q, norm(dQ')]            
-            %input('kolejny krok')
+            fprintf('Iteracja %3.d, wskaünik jakoúci: %.8f, norma gradientu %.8f\n', nrIteracji, Q, norm(dQ'))
+    end
+    if nrIteracji == 200
+        break
     end
 end
-[t, x, ~, dQ, H1] = gradient(x0, xmin, u0, umax, h0, Tk, a);
+[t, x, ~, dQ, ~] = gradient(x0, xmin, u0, umax, h0, Tk, parametry);
+fprintf('Iteracja %3.d, wskaünik jakoúci: %.8f, norma gradientu %.8f\n', nrIteracji, Q, norm(dQ'))
 tau = xmin;
-nrIteracji
 end
 
 

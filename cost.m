@@ -1,7 +1,14 @@
-function [ Q ] = cost( x0, tau, u0, umax, h0, tf, a )
+function [ Q, xres ] = cost( x0, tau, u0, umax, h0, tf, parametry )
 %Zwraca wartoœæ funkcji kosztu.
 
-dtau = diff([0; tau; tf]);
+if size(tau, 1) == 1
+    tau = tau';
+end
+if tau(1) ~= 0 && tau(end) ~= tf
+    dtau = diff([0; tau; tf]);
+else
+    dtau = diff(tau);
+end
 N    = ceil(dtau./h0);
 cn   = cumsum([1; N]);
 xtmp = x0;
@@ -22,18 +29,17 @@ for j = 1:length(dtau)
     h_6 = h/6;
     h_3 = 2*h_6;
     for i = cn(j):cn(j+1)-1
-        dx1=rhs(xtmp, u(j), a);
-        dx2=rhs(xtmp+h_2*dx1, u(j), a);
-        dx3=rhs(xtmp+h_2*dx2, u(j), a);
-        dx4=rhs(xtmp+h*dx3, u(j), a);
+        dx1=rhs(xtmp, u(j), parametry);
+        dx2=rhs(xtmp+h_2*dx1, u(j), parametry);
+        dx3=rhs(xtmp+h_2*dx2, u(j), parametry);
+        dx4=rhs(xtmp+h*dx3, u(j), parametry);
         xtmp=xtmp+h_6*(dx1+dx4)+h_3*(dx2+dx3);
         xres(aaa, :)=xtmp;
         aaa= aaa+1;
     end
 end
-% Q = x0(3)*x0(4)-xtmp(3)*xtmp(4);
-xT = a(7);
-suma=sum(abs(xres(:, 3)))
+
+xT = parametry.xT;
 Q = xtmp(5) + (xT - xtmp(1))^2;
 end
 

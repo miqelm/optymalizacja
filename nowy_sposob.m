@@ -1,6 +1,7 @@
 tau = 0:1000*odstep_czasu:czas_symulacji; % Wektor wêz³ów
 % tau = [0, sort(randperm(ilosc_punktow_czasu*odstep_czasu-1, 6)), ilosc_punktow_czasu*odstep_czasu];
 dtau = diff(tau); % D³ugoœæ przedzia³ów strukuralnych
+umax = 1;
 u0 = 1; % "Niby" znane sterowanie
 h0 = odstep_czasu; % D³ugoœæ kroku metody Rungego-Kutty
 n = ceil(dtau/h0)';
@@ -57,10 +58,10 @@ end
 %% Sprawdzanie
 epsil = 1e-6;
 dQ = zeros(length(x0)-1, 1)';
-Q = cost(ster, odstep_czasu, x0, parametry, ilosc_punktow_czasu);
+[Q, xtmp] = cost(x0, tau, u0, umax, h0, czas_symulacji, parametry);
 for i = 1:length(x0)-1
     x0_ = x0;
     x0_(i) = x0_(i) + epsil;
-    Q_ = cost(ster, odstep_czasu, x0_, parametry, ilosc_punktow_czasu);
+    Q_ = cost(x0_, tau, u0, umax, h0, czas_symulacji, parametry);
     dQ(i) = (Q_ - Q)/epsil;
 end

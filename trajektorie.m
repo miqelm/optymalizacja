@@ -8,6 +8,9 @@ plot(t, x1)
 xlabel('Czas [s]')
 ylabel('Odleg³oœæ [m]')
 title(sprintf('Po³o¿enie (x(0) = %.2f m)', x0(1)))
+hold on
+plot(t, parametry.xT, 'r')
+legend('Po³o¿enie [m]', 'Zadane po³o¿enie koñcowe [m]')
 subplot(3, 2, 2)
 plot(t, x2)
 xlabel('Czas [s]')
@@ -25,28 +28,20 @@ ylabel(sprintf('Prêdkoœæ [%c/s]', 176))
 title(sprintf('Prêdkoœæ k¹towa (Theta''(0) = %.2f %c/s)', x0(4)*180/pi, 176))
 subplot(3, 2, [5 6])
 
-u=[];
-xmin = [0; xmin];
+u = zeros(size(t));
+dtau = diff([0; xmin; czas_symulacji]);
+N    = ceil(dtau./odstep_czasu);
+cn   = cumsum([1; N]);
 ster = u0;
-it = 1;
-i = 1
-while i <= length(t)
-    if abs(t(i) - xmin(it)) < odstep_czasu/2
-        ster = -ster;
-        if it < length(xmin)
-            it = it+1;
-        end
-        if xmin(it-1) == xmin(it)
-            continue
-        end
-    end
-    u(i) = ster;
-    i = i + 1;
+u(1) = u0;
+for j = 1:length(dtau)
+    u(cn(j)+1:cn(j+1)) = ster;
+    ster = -ster;
 end
-indeksy = find(t>xmin(end));
-u(indeksy) = -ster;
 
-plot(t, u)
+plot(t, u, ':')
+lim = abs(u0) * 1.5;
+ylim([-lim lim])
 xlabel('Czas [s]')
 ylabel('Sterowanie')
 title('Sterowanie u')

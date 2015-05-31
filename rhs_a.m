@@ -8,11 +8,11 @@ Psi1 = z(5);
 Psi2 = z(6);
 Psi3 = z(7);
 Psi4 = z(8);
-m = parametry(1);
-M = parametry(2);
-l = parametry(3);
-g = parametry(4);
-fc = parametry(6);
+m = parametry.m;
+M = parametry.M;
+l = parametry.l;
+g = parametry.g;
+fc = parametry.fc;
 
 %% Wylicznie prawych stron równañ ró¿niczkowych
 dx(1) = x2;

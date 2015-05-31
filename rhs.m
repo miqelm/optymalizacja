@@ -4,11 +4,11 @@ dx = zeros(1, 5);
 x2 = z(2);
 x3 = z(3);
 x4 = z(4);
-m = parametry(1);
-M = parametry(2);
-l = parametry(3);
-g = parametry(4);
-fc = parametry(6);
+m = parametry.m;
+M = parametry.M;
+l = parametry.l;
+g = parametry.g;
+fc = parametry.fc;
 
 %% Wylicznie prawych stron równañ ró¿niczkowych
 dx(1) = x2;

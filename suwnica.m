@@ -1,9 +1,20 @@
 %% MAIN
 clear all;
 close all;
-format compact
 format long e
-stale
+
+%% Sta³e
+parametry.m = 0.192; % m
+parametry.M = 0.604; % M
+parametry.l = 0.165; % l
+parametry.g = 9.81;  % g
+parametry.fc = 1;  % fc
+parametry.xT = 1;     % xT
+
+%% Parametry symulacji
+czas_symulacji = 5;
+odstep_czasu = 0.01;
+ilosc_przelaczen = 30;
 
 %% WARUNKI POCZ¥TKOWE
 x0 = 0;
@@ -12,39 +23,18 @@ theta0 = 0;
 thetaprim0 = 0;
 x0 = [x0 xprim0 theta0 thetaprim0 0];
 
-%% Nowy sposób
-% nowy_sposob
-% x = xn;
-% u = ster;
-% wyliczone = psi_rozw(1, :)
-% sprawdzone = -dQ
-%% OBLICZENIA
-u = zeros(ilosc_punktow_czasu, 1);
-[x, psi_rozw, dQ, t] = rozwiaz_uklad(u, odstep_czasu, x0, parametry, ilosc_punktow_czasu);
-
-wyliczone = psi_rozw(1, :)
-sprawdzone = -dQ(1:4)'
-
-%Testowanie dzia³ania metody BFGS
-a = parametry;
-%Pierwszy zestaw parametrów X00 = [1 4.6 0.1 25]; % X S P V
-% X00 = [1 1 0.1 25];
-X00 = x0;
-Tk = czas_symulacji;
-h0 = odstep_czasu;
-iloscPrzelaczen = 3;
-tau = linspace(0, Tk, iloscPrzelaczen+2)';
+%% Optymalizacja sterowania metod¹ BFGS
+tau = linspace(0, czas_symulacji, ilosc_przelaczen + 2)';
 tau = tau(2:end-1);
 
 umax = 1;
 u0 = umax;
 e0 = 1e-6;
-[t, x, dQ, H, xmin, u0] = BFGS(tau, X00, h0, a, Tk, umax, u0);
+[t, x, xmin, u0] = BFGS(tau, x0, odstep_czasu, parametry, czas_symulacji, umax, u0);
 display('Otrzymane rozwi¹zanie');
 x=x';
 xmin
 u0
-
 
 %% TRAJEKTORIE
 trajektorie
